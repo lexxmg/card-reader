@@ -1,6 +1,9 @@
 
 'use strict';
 
+const number = document.querySelector('.text'),
+      btn = document.querySelector('.btn');
+
 const { createWorker } = Tesseract;
 (async () => {
   const worker = createWorker();
@@ -12,5 +15,14 @@ const { createWorker } = Tesseract;
   });
   const { data: { text } } = await worker.recognize('../../img/Изображение PNG.png');
   console.log(text.substr(0, 10));
-  await worker.terminate();
+  number.textContent = text.substr(0, 10);
+  //await worker.terminate();
 })();
+
+
+btn.addEventListener('click', () => {
+  window.getSelection().selectAllChildren(number);
+  document.execCommand("copy");
+  window.getSelection().removeAllRanges();
+  number.style.color = 'green';
+});
